@@ -1,4 +1,4 @@
-import React, {useState, Component} from "react";
+import React, {useState} from "react";
 import "./Feedback.module.css";
 import Section from "./Section/Section";
 import FeedbackOptions from "./FeedbackOptions/FeedbackOptions";
