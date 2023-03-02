@@ -11,10 +11,8 @@ export default function Feedback () {
     const [ good, setGood ] = useState(0);
     const [ neutral, setNeutral ] = useState(0);
     const [ bad, setBad ] = useState(0);
-    const [ total, setTotal ] = useState(0);
 
     const options = [ 'good', 'neutral', 'bad' ];
-
 
     const clickFeedback = event => {
         const name = event.target.name;
@@ -22,17 +20,14 @@ export default function Feedback () {
         switch(name) {
             case 'good' : 
               setGood(prevState => prevState + 1);
-              setTotal(prevState => prevState + 1);
             break;
 
             case 'neutral':
                 setNeutral(prevState => prevState + 1);
-                setTotal(prevState => prevState + 1);
             break;
 
             case 'bad': 
                 setBad(prevState => prevState + 1);
-                setTotal(prevState => prevState + 1);
             break;
 
             default:
@@ -40,8 +35,18 @@ export default function Feedback () {
         };   
     };
 
+    const countTotalFeedback = () => {
+        const values = Object.values({good, neutral, bad})
+        
+        const total = values.reduce((total, value) => {
+            return total + value;
+        }, 0);
+        
+        return total;
+    };
+
     const countPositiveFeedbackPercentage = () => {
-        const result = Math.round(((good + neutral) / total) * 100);
+        const result = Math.round(((good + neutral) / countTotalFeedback()) * 100);
         return result;
     };
 
@@ -57,11 +62,11 @@ export default function Feedback () {
               </Section>
 
               <Section title={'Statistics'}>
-              {!total ? <Notification message={'No feedback given'}/> :<Statistics
+              {!countTotalFeedback() ? <Notification message={'No feedback given'}/> :<Statistics
                 good={good}
                 neutral={neutral}
                 bad={bad}
-                total={total}
+                total={countTotalFeedback()}
                 positivePercentage={countPositiveFeedbackPercentage()}
                 />
                }
